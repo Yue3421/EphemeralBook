@@ -1,9 +1,10 @@
 <p>Lakukan 
 php artisan migrate
-php artisan db:seed</p>
+php artisan db:seed
+</p>
 <br>
 <p>
-    Admin :
-    Email = admin@ephemeral.com
+    Admin : <br>
+    Email = admin@ephemeral.com <br>
     password = password
 </p>
