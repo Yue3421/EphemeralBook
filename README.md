@@ -19,5 +19,5 @@ php artisan db:seed
 ```
 
 Login Admin :
-Email : admin@ephemeral.com
-Password : password
+- Email : admin@ephemeral.com
+- Password : password
