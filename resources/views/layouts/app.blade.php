@@ -29,28 +29,28 @@
         }
     </style>
 </head>
-<body class="bg-zinc-950 text-zinc-200">
+<body >
 
     {{-- NAVBAR --}}
-    <nav class="bg-zinc-100 text-zinc-950 border-b border-zinc-200">
+    <nav class="bg-[#D9D9D9] text-[#37353E] border-b border-zinc-300">
         <div class="tail-container px-8 py-5 flex items-center justify-between">
             <div class="flex items-center gap-x-3">
-                <span class="text-3xl font-bold tracking-tighter">Ephemeralbook</span>
+                <a href="{{ route('customer.dashboard') }}" class="text-3xl font-bold tracking-tighter">Ephemeralbook</a>
             </div>
             
             <div class="hidden md:flex items-center gap-x-10 text-sm font-medium">
-                <a href="#" class="hover:text-amber-700 transition-colors">Home</a>
-                <a href="#" class="hover:text-amber-700 transition-colors">Product</a>
-                <a href="#" class="hover:text-amber-700 transition-colors">Purchase</a>
+                <a href="{{ route('customer.dashboard') }}" class="hover:text-[#876C67] transition-colors">Home</a>
+                <a href="{{ route('products') }}" class="hover:text-[#876C67] transition-colors">Product</a>
+                <a href="{{ route('orders') }}" class="hover:text-[#876C67] transition-colors">Purchase</a>
             </div>
 
             <div class="flex items-center gap-x-6">
-                <button class="relative hover:text-amber-700 transition-colors">
+                <a href="{{ route('cart') }}" class="relative hover:text-[#876C67] transition-colors">
                     <i class="fa-solid fa-cart-shopping text-2xl"></i>
-                </button>
-                <button class="hover:text-amber-700 transition-colors">
+                </a>
+                <a href="{{ route('profile') }}" class="hover:text-[#876C67] transition-colors">
                     <i class="fa-solid fa-circle-user text-3xl"></i>
-                </button>
+                </a>
 
                 {{-- Logout di sebelah kanan --}}
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
@@ -58,7 +58,7 @@
                 </form>
                 <a href="#" 
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                class="flex items-center gap-x-1.5 text-sm font-medium hover:text-amber-700 transition-colors">
+                class="flex items-center gap-x-1.5 text-sm font-medium hover:text-[#876C67] transition-colors">
                     <i class="fa-solid fa-right-from-bracket text-lg"></i>
                     Logout
                 </a>
@@ -69,13 +69,15 @@
     @yield('content')
 
     {{-- FOOTER --}}
-    <footer class="bg-zinc-100 text-zinc-950 py-16">
+    <footer class="bg-[#D9D9D9] text-[#876C67] py-16">
         <div class="tail-container px-8">
             <div class="flex flex-col md:flex-row justify-between items-start gap-y-12">
                 <div>
                     <div class="flex items-center gap-x-4">
-                        <div class="bg-zinc-900 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-5xl font-black">EB</div>
-                        <span class="text-3xl font-bold tracking-tight">EphemeralBook</span>
+                        <img src="{{ asset('images/logo-ephemeral.png') }}"
+                             alt="Logo EphemeralBook"
+                             class="w-20 h-20 object-contain">
+                        <span class="text-2xl font-bold tracking-tighter">Ephemeralbook</span>
                     </div>
                     
                     <div class="mt-10 space-y-3 text-sm">
@@ -87,7 +89,7 @@
                 </div>
 
                 <div class="text-right text-xs text-zinc-500 self-end">
-                    COPYRIGHT © Yue3421 on GitHub
+                    <a href="https://github.com/Yue3421" target="_blank" rel="noopener noreferrer">COPYRIGHT © Yue3421 on GitHub</a>
                 </div>
             </div>
         </div>

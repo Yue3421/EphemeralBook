@@ -64,15 +64,41 @@ class ReportController extends Controller
             ->limit(10)
             ->get();
 
+        $monthlySales = Transaction::whereYear('created_at', now()->year)
+            ->where('payment_status', 'paid')
+            ->select(
+                DB::raw('MONTH(created_at) as month'),
+                DB::raw('SUM(total_amount) as total_revenue')
+            )
+            ->groupBy('month')
+            ->orderBy('month')
+            ->pluck('total_revenue', 'month');
+
+        $totalStaff = User::where('role', 'staff')->count();
+        $totalUsers = User::where('role', 'customer')->count();
+        $totalOrders = Transaction::count();
+
         if ($request->wantsJson()) {
             return response()->json([
                 'summary' => $summary,
                 'sales_data' => $salesData,
-                'top_products' => $topProducts
+                'top_products' => $topProducts,
+                'monthly_sales' => $monthlySales,
+                'total_staff' => $totalStaff,
+                'total_users' => $totalUsers,
+                'total_orders' => $totalOrders
             ]);
         }
 
-        return view('admin.reports.sales', compact('salesData', 'summary', 'topProducts'));
+        return view('admin.reports.sales', compact(
+            'salesData',
+            'summary',
+            'topProducts',
+            'monthlySales',
+            'totalStaff',
+            'totalUsers',
+            'totalOrders'
+        ));
     }
 
     /**

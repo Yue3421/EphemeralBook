@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Masuk | EphemeralBook</title>
+    <title>Registrasi | EphemeralBook</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -176,13 +176,14 @@
             </div>
         </div>
         
-        <!-- Form -->
+        <!-- Right Panel - Register Form -->
         <div class="right-panel">
             <div class="max-w-md mx-auto w-full">
                 <div class="text-center mb-8 animate-fade-in delay-1">
                     <h2 class="text-3xl font-bold text-[#D3DAD9]">Registrasi</h2>
-                    <p class="text-[#D3DAD9] text-opacity-60 mt-2">Daftarkan akun kamu untuk login</p>
+                    <p class="text-[#D3DAD9] text-opacity-60 mt-2">Daftarkan akun kamu untuk mulai berbelanja</p>
                 </div>
+                
                 <!-- Session Status -->
                 @if(session('error'))
                     <div class="mb-6 bg-[#715A5A] bg-opacity-20 border-l-4 border-[#715A5A] text-[#D3DAD9] p-4 rounded-lg flex items-center animate-fade-in delay-1" role="alert">
@@ -197,15 +198,123 @@
                         <span>{{ session('success') }}</span>
                     </div>
                 @endif
-                <div class="text-center mt-4">
+                
+                <!-- Error Validation -->
+                @if($errors->any())
+                    <div class="mb-6 bg-[#715A5A] bg-opacity-20 border-l-4 border-[#715A5A] text-[#D3DAD9] p-4 rounded-lg animate-fade-in delay-1">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-exclamation-triangle mr-2 text-[#715A5A]"></i>
+                            <span class="font-semibold">Terdapat kesalahan:</span>
+                        </div>
+                        <ul class="list-disc list-inside ml-6 space-y-1 text-sm">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                
+                <!-- Form Register -->
+                <form method="POST" action="{{ route('register') }}" class="space-y-5 animate-fade-in delay-2">
+                    @csrf
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-[#D3DAD9] mb-2">
+                            <i class="fas fa-user mr-2 text-[#715A5A]"></i>
+                            Nama
+                        </label>
+                        <input 
+                            type="text" 
+                            name="name" 
+                            id="name" 
+                            value="{{ old('name') }}"
+                            class="input-field"
+                            placeholder="Nama lengkap"
+                            required
+                        >
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-[#D3DAD9] mb-2">
+                            <i class="fas fa-envelope mr-2 text-[#715A5A]"></i>
+                            Email
+                        </label>
+                        <input 
+                            type="email" 
+                            name="email" 
+                            id="email" 
+                            value="{{ old('email') }}"
+                            class="input-field"
+                            placeholder="nama@email.com"
+                            required
+                        >
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-[#D3DAD9] mb-2">
+                            <i class="fas fa-lock mr-2 text-[#715A5A]"></i>
+                            Sandi
+                        </label>
+                        <input 
+                            type="password" 
+                            name="password" 
+                            id="password" 
+                            class="input-field"
+                            placeholder="********"
+                            required
+                        >
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-[#D3DAD9] mb-2">
+                            <i class="fas fa-lock mr-2 text-[#715A5A]"></i>
+                            Konfirmasi Sandi
+                        </label>
+                        <input 
+                            type="password" 
+                            name="password_confirmation" 
+                            id="password_confirmation" 
+                            class="input-field"
+                            placeholder="********"
+                            required
+                        >
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-[#D3DAD9] mb-2">
+                            <i class="fas fa-phone mr-2 text-[#715A5A]"></i>
+                            Nomor HP (opsional)
+                        </label>
+                        <input 
+                            type="text" 
+                            name="phone" 
+                            id="phone" 
+                            value="{{ old('phone') }}"
+                            class="input-field"
+                            placeholder="08xxxxxxxxxx"
+                        >
+                    </div>
+                    
+                    <button type="submit" class="btn-login mt-6">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        Daftar
+                    </button>
+                    
+                    <div class="text-center mt-4">
                         <p class="text-[#D3DAD9] text-opacity-70">
-                            Tidak punya akun?
+                            Sudah punya akun?
                             <a href="{{ route('login') }}" class="font-semibold text-[#715A5A] hover:text-opacity-80 transition-colors hover:underline">
-                                Daftar sekarang
+                                Masuk sekarang
                             </a>
                         </p>
+                    </div>
+                </form>
+                
+                <div class="text-center mt-8 text-[#D3DAD9] text-opacity-40 text-xs animate-fade-in delay-3">
+                    <p>&copy; {{ date('Y') }} EphemeralBook. All rights reserved.</p>
                 </div>
             </div>
         </div>
+    </div>
 </body>
 </html>

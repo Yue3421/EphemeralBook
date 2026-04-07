@@ -23,6 +23,15 @@ class BackupController extends Controller
     }
 
     /**
+     * Tampilkan halaman restore.
+     */
+    public function showRestore()
+    {
+        $backups = Backup::latest()->get();
+        return view('admin.backup.restore', compact('backups'));
+    }
+
+    /**
      * Buat backup database baru.
      */
     public function create()
@@ -77,11 +86,11 @@ class BackupController extends Controller
                 'created_by' => Auth::id()
             ]);
 
-            return redirect()->route('admin.backup.index')
+            return redirect()->route('admin.backups.index')
                 ->with('success', 'Backup database berhasil dibuat');
 
         } catch (\Exception $e) {
-            return redirect()->route('admin.backup.index')
+            return redirect()->route('admin.backups.index')
                 ->with('error', 'Gagal membuat backup: ' . $e->getMessage());
         }
     }
@@ -92,7 +101,7 @@ class BackupController extends Controller
     public function download(Backup $backup)
     {
         if (!Storage::exists($backup->file_path)) {
-            return redirect()->route('admin.backup.index')
+            return redirect()->route('admin.backups.index')
                 ->with('error', 'File backup tidak ditemukan');
         }
 
@@ -119,16 +128,15 @@ class BackupController extends Controller
             // Baca file SQL
             $sql = Storage::get($backup->file_path);
             
-            // Validate SQL - only allow safe statements
+            // Validate SQL - only block high risk statements
             $dangerousPatterns = [
-                '/;\s*DROP\s+/i',
-                '/;\s*DELETE\s+/i',
-                '/;\s*TRUNCATE\s+/i',
-                '/;\s*ALTER\s+USER/i',
-                '/;\s*GRANT\s+/i',
-                '/;\s*REVOKE\s+/i',
+                '/\bDROP\s+DATABASE\b/i',
+                '/\bDROP\s+USER\b/i',
+                '/\bALTER\s+USER\b/i',
+                '/\bGRANT\b/i',
+                '/\bREVOKE\b/i',
             ];
-            
+
             foreach ($dangerousPatterns as $pattern) {
                 if (preg_match($pattern, $sql)) {
                     throw new \Exception('File backup mengandung perintah SQL yang tidak diizinkan');
@@ -154,12 +162,12 @@ class BackupController extends Controller
             
             DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
-            return redirect()->route('admin.backup.index')
+            return redirect()->route('admin.backups.index')
                 ->with('success', 'Database berhasil direstore dari file: ' . $backup->file_name);
 
         } catch (\Exception $e) {
             DB::statement('SET FOREIGN_KEY_CHECKS=1');
-            return redirect()->route('admin.backup.index')
+            return redirect()->route('admin.backups.index')
                 ->with('error', 'Gagal restore: ' . $e->getMessage());
         }
     }
@@ -178,11 +186,11 @@ class BackupController extends Controller
             // Hapus record
             $backup->delete();
 
-            return redirect()->route('admin.backup.index')
+            return redirect()->route('admin.backups.index')
                 ->with('success', 'File backup berhasil dihapus');
 
         } catch (\Exception $e) {
-            return redirect()->route('admin.backup.index')
+            return redirect()->route('admin.backups.index')
                 ->with('error', 'Gagal menghapus backup: ' . $e->getMessage());
         }
     }

@@ -249,7 +249,7 @@
                                 name="password" 
                                 id="password" 
                                 class="input-field pr-12"
-                                placeholder="••••••••"
+                                placeholder="********"
                                 required
                             >
                             <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#D3DAD9] text-opacity-50 hover:text-[#715A5A]">
@@ -257,7 +257,6 @@
                             </button>
                         </div>
                     </div>
-                    
                     <!-- Submit Button -->
                     <button type="submit" class="btn-login mt-6">
                         <i class="fas fa-sign-in-alt mr-2"></i>

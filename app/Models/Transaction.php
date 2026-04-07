@@ -135,9 +135,12 @@ public function getFormattedTotalAttribute()
     public static function generateInvoiceCode()
     {
         $date = now()->format('Ymd');
-        $lastTransaction = self::whereDate('created_at', today())->count();
-        $number = str_pad($lastTransaction + 1, 4, '0', STR_PAD_LEFT);
-        
-        return 'INV/' . $date . '/' . $number;
+        do {
+            $number = str_pad((string) random_int(0, 9999), 4, '0', STR_PAD_LEFT);
+            $code = 'INV/' . $date . '/' . $number;
+            $exists = self::where('invoice_code', $code)->exists();
+        } while ($exists);
+
+        return $code;
     }
 }

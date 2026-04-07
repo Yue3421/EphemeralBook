@@ -8,6 +8,7 @@ use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\Address;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -23,17 +24,29 @@ class TransactionController extends Controller
             ->get();
 
         if ($cartItems->isEmpty()) {
-            return redirect()->route('cart.index')
+            return redirect()->route('cart')
                 ->with('error', 'Keranjang belanja masih kosong');
         }
 
         // Cek stok semua item
         foreach ($cartItems as $item) {
             if ($item->product->stock < $item->quantity) {
-                return redirect()->route('cart.index')
+                return redirect()->route('cart')
                     ->with('error', "Stok {$item->product->name} tidak mencukupi. Tersedia: {$item->product->stock}");
             }
         }
+
+        $defaultAddress = Address::where('user_id', Auth::id())
+            ->orderByDesc('is_default')
+            ->latest()
+            ->first();
+
+        if (!$defaultAddress) {
+            return redirect()->route('addresses.index')
+                ->with('error', 'Silakan tambah alamat terlebih dahulu.');
+        }
+
+        $shippingAddress = $defaultAddress->formatted_address;
 
         $subtotal = $cartItems->sum(function($item) {
             return $item->product->price * $item->quantity;
@@ -42,7 +55,14 @@ class TransactionController extends Controller
         $shippingCost = 10000; // Bisa diatur dinamis
         $total = $subtotal + $shippingCost;
 
-        return view('customer.transaction.checkout', compact('cartItems', 'subtotal', 'shippingCost', 'total'));
+        return view('customer.transaction.checkout', compact(
+            'cartItems',
+            'subtotal',
+            'shippingCost',
+            'total',
+            'defaultAddress',
+            'shippingAddress'
+        ));
     }
 
     /**
@@ -53,6 +73,7 @@ class TransactionController extends Controller
         $request->validate([
             'shipping_address' => 'required|string',
             'shipping_courier' => 'required|string',
+            'payment_method' => 'required|string',
             'notes' => 'nullable|string'
         ]);
 
@@ -83,7 +104,7 @@ class TransactionController extends Controller
             $total = $subtotal + $shippingCost;
 
             // Buat invoice code unik
-            $invoiceCode = 'INV/' . date('Ymd') . '/' . Auth::id() . '/' . rand(1000, 9999);
+            $invoiceCode = Transaction::generateInvoiceCode();
 
             // Buat transaksi
             $transaction = Transaction::create([
@@ -119,7 +140,7 @@ class TransactionController extends Controller
 
             DB::commit();
 
-            return redirect()->route('customer.transactions.show', $transaction->id)
+            return redirect()->route('payments.show', $transaction->id)
                 ->with('success', 'Checkout berhasil! Silakan lakukan pembayaran.');
 
         } catch (\Exception $e) {
@@ -131,14 +152,19 @@ class TransactionController extends Controller
     /**
      * Tampilkan daftar transaksi user.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $transactions = Transaction::with('details.product')
-            ->where('user_id', Auth::id())
-            ->latest()
-            ->paginate(10);
+        $query = Transaction::with('details.product', 'latestPayment')
+            ->where('user_id', Auth::id());
 
-        return view('customer.transaction.index', compact('transactions'));
+        $status = $request->get('status');
+        if ($status && in_array($status, ['completed', 'cancelled', 'pending', 'processing'])) {
+            $query->where('status', $status);
+        }
+
+        $transactions = $query->latest()->paginate(10)->withQueryString();
+
+        return view('customer.transaction.index', compact('transactions', 'status'));
     }
 
     /**
@@ -151,9 +177,33 @@ class TransactionController extends Controller
             abort(403);
         }
 
-        $transaction->load('details.product', 'payment');
+        return redirect()->route('orders')
+            ->with('success', 'Pembayaran sedang diproses. Silakan cek di daftar pesanan.');
+    }
 
-        return view('customer.transaction.show', compact('transaction'));
+    /**
+     * Halaman pembayaran QRIS.
+     */
+    public function payment(Transaction $transaction)
+    {
+        if ($transaction->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $transaction->load('details.product');
+
+        $itemsCount = $transaction->details->sum('quantity');
+        $subtotal = $transaction->subtotal ?? 0;
+        $shippingCost = $transaction->shipping_cost ?? 0;
+        $total = $transaction->total_amount ?? 0;
+
+        return view('customer.payment.qris', compact(
+            'transaction',
+            'itemsCount',
+            'subtotal',
+            'shippingCost',
+            'total'
+        ));
     }
 
     /**

@@ -15,6 +15,7 @@ class Product extends Model
         'price',
         'stock',
         'image',
+        'jenis',
         'isbn',
         'author',
         'publisher',

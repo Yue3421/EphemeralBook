@@ -16,7 +16,8 @@ class User extends Authenticatable
         'password',
         'role',
         'phone',
-        'address'
+        'address',
+        'profile_photo'
     ];
 
     protected $hidden = [
@@ -43,6 +44,11 @@ class User extends Authenticatable
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
     }
 
     // Cek role

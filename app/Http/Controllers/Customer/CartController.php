@@ -77,6 +77,11 @@ class CartController extends Controller
             ]);
         }
 
+        if ($request->filled('redirect')) {
+            return redirect()->to($request->redirect)
+                ->with('success', 'Produk berhasil ditambahkan ke keranjang');
+        }
+
         return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang');
     }
 
@@ -110,11 +115,16 @@ class CartController extends Controller
             return $item->product->price * $item->quantity;
         });
 
-        return response()->json([
-            'message' => 'Keranjang berhasil diupdate',
-            'subtotal' => $subtotal,
-            'item_total' => $cart->product->price * $cart->quantity
-        ]);
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'Keranjang berhasil diupdate',
+                'subtotal' => $subtotal,
+                'item_total' => $cart->product->price * $cart->quantity
+            ]);
+        }
+
+        return redirect()->route('cart')
+            ->with('success', 'Keranjang berhasil diupdate');
     }
 
     /**
@@ -138,7 +148,7 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect()->route('cart.index')
+        return redirect()->route('cart')
             ->with('success', 'Item berhasil dihapus dari keranjang');
     }
 
@@ -149,7 +159,7 @@ class CartController extends Controller
     {
         Cart::where('user_id', Auth::id())->delete();
 
-        return redirect()->route('cart.index')
+        return redirect()->route('cart')
             ->with('success', 'Keranjang berhasil dikosongkan');
     }
 
