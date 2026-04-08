@@ -23,8 +23,8 @@
                     <div class="flex justify-center">
                         <div class="w-48 h-48 rounded-2xl overflow-hidden border-4 border-[#2F2D36] bg-[#2F2D36]">
                             <img src="{{ $user->profile_photo ? asset('storage/'.$user->profile_photo) : asset('images/profile.jpg') }}"
-                                 alt="Profile"
-                                 class="w-full h-full object-cover">
+                                alt="Profile"
+                                class="w-full h-full object-cover">
                         </div>
                     </div>
 
@@ -43,29 +43,29 @@
                             <div>
                                 <label class="block text-xs text-[#C9C3BA] mb-1">Nama lengkap</label>
                                 <input type="text"
-                                       value="{{ $user->name }}"
-                                       class="w-full bg-white text-zinc-900 rounded-lg px-4 py-3"
-                                       readonly>
+                                    value="{{ $user->name }}"
+                                    class="w-full bg-white text-zinc-900 rounded-lg px-4 py-3"
+                                    readonly>
                             </div>
                             <div>
                                 <label class="block text-xs text-[#C9C3BA] mb-1">Email</label>
                                 <input type="text"
-                                       value="{{ $user->email }}"
-                                       class="w-full bg-white text-zinc-900 rounded-lg px-4 py-3"
-                                       readonly>
+                                    value="{{ $user->email }}"
+                                    class="w-full bg-white text-zinc-900 rounded-lg px-4 py-3"
+                                    readonly>
                             </div>
                             <div>
                                 <label class="block text-xs text-[#C9C3BA] mb-1">No. Telp.</label>
                                 <input type="text"
-                                       value="{{ $user->phone ?? '-' }}"
-                                       class="w-full bg-white text-zinc-900 rounded-lg px-4 py-3"
-                                       readonly>
+                                    value="{{ $user->phone ?? '-' }}"
+                                    class="w-full bg-white text-zinc-900 rounded-lg px-4 py-3"
+                                    readonly>
                             </div>
                         </div>
 
                         <div class="mt-6 flex flex-wrap items-center gap-3">
                             <a href="{{ route('addresses.index') }}"
-                               class="bg-[#8B7B7B] hover:bg-[#7A6A6A] transition-colors px-5 py-2 rounded-lg text-xs text-white font-semibold">
+                            class="bg-[#8B7B7B] hover:bg-[#7A6A6A] transition-colors px-5 py-2 rounded-lg text-xs text-white font-semibold">
                                 Tambah/Ubah Alamat
                             </a>
                         </div>

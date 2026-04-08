@@ -158,19 +158,13 @@
                         <div class="w-8 h-8 bg-[#715A5A] rounded-lg flex items-center justify-center">
                             <i class="fas fa-check text-sm text-[#D3DAD9]"></i>
                         </div>
-                        <span>Ribuan koleksi buku bekas berkualitas</span>
+                        <span>Koleksi buku bekas berkualitas</span>
                     </div>
                     <div class="flex items-center space-x-3 text-[#D3DAD9] text-opacity-70">
                         <div class="w-8 h-8 bg-[#715A5A] rounded-lg flex items-center justify-center">
                             <i class="fas fa-check text-sm text-[#D3DAD9]"></i>
                         </div>
                         <span>Harga terjangkau dan ramah di kantong</span>
-                    </div>
-                    <div class="flex items-center space-x-3 text-[#D3DAD9] text-opacity-70">
-                        <div class="w-8 h-8 bg-[#715A5A] rounded-lg flex items-center justify-center">
-                            <i class="fas fa-check text-sm text-[#D3DAD9]"></i>
-                        </div>
-                        <span>Pengiriman cepat ke seluruh Indonesia</span>
                     </div>
                 </div>
             </div>

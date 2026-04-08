@@ -35,15 +35,15 @@
         <section class="mb-6">
             <div class="inline-flex items-center gap-2 bg-[#8B7B7B] rounded-full p-1 text-xs">
                 <a href="{{ route('staff.orders.index') }}"
-                   class="px-4 py-2 rounded-full {{ empty($status) ? 'bg-[#6A5B5B] text-white' : 'text-[#F1ECE6]' }}">
+                class="px-4 py-2 rounded-full {{ empty($status) ? 'bg-[#6A5B5B] text-white' : 'text-[#F1ECE6]' }}">
                     Semua pesanan
                 </a>
                 <a href="{{ route('staff.orders.index', ['status' => 'completed']) }}"
-                   class="px-4 py-2 rounded-full {{ $status === 'completed' ? 'bg-[#6A5B5B] text-white' : 'text-[#F1ECE6]' }}">
+                class="px-4 py-2 rounded-full {{ $status === 'completed' ? 'bg-[#6A5B5B] text-white' : 'text-[#F1ECE6]' }}">
                     Selesai
                 </a>
                 <a href="{{ route('staff.orders.index', ['status' => 'cancelled']) }}"
-                   class="px-4 py-2 rounded-full {{ $status === 'cancelled' ? 'bg-[#6A5B5B] text-white' : 'text-[#F1ECE6]' }}">
+                class="px-4 py-2 rounded-full {{ $status === 'cancelled' ? 'bg-[#6A5B5B] text-white' : 'text-[#F1ECE6]' }}">
                     Dibatalkan
                 </a>
             </div>

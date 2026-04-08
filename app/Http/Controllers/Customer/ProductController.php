@@ -13,7 +13,9 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Product::query()->latest();
+        $query = Product::query()
+            ->where('stock', '>', 0)
+            ->latest();
 
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');

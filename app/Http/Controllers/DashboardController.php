@@ -43,7 +43,7 @@ class DashboardController extends Controller
             ->sum('transaction_details.quantity');
 
         // Produk untuk ditampilkan
-        $products = Product::latest()->get();
+        $products = Product::where('stock', '>', 0)->latest()->get();
         return view('customer.dashboard', compact('products'));
 
         // 5 transaksi terbaru

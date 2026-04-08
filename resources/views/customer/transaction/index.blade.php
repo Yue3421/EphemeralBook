@@ -44,7 +44,7 @@
                     $paymentMethod = $transaction->latestPayment?->payment_method_label ?? 'QRIS';
                     $statusText = $transaction->status === 'cancelled'
                         ? 'Dibatalkan'
-                        : ($transaction->payment_status === 'paid' ? 'Lunas' : 'Menunggu konfirmasi admin');
+                        : ($transaction->payment_status === 'paid' ? 'Dikonfirmasi' : 'Menunggu konfirmasi admin');
                 @endphp
 
                 <details class="bg-[#4A4754] rounded-2xl p-5 soft-shadow">
@@ -88,6 +88,22 @@
                                 <span class="w-40">Metode Pembayaran</span>
                                 <span>:</span>
                                 <span>{{ $paymentMethod }}</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <span class="w-40">Status Barang</span>
+                                <span>:</span>
+                                <span>
+                                    @php
+                                        $shippingStatus = $transaction->shipping_status;
+                                        $shippingLabel = match($shippingStatus) {
+                                            'shipped' => 'Dikirim',
+                                            'delivered' => 'Diterima',
+                                            'packing' => 'Sedang Diproses',
+                                            default => 'Menunggu'
+                                        };
+                                    @endphp
+                                    {{ $shippingLabel }}
+                                </span>
                             </div>
                             <div class="flex items-start gap-2">
                                 <span class="w-40">ID Pesanan</span>

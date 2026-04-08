@@ -24,14 +24,14 @@
                 <ul class="space-y-3 text-sm text-[#F1ECE6]">
                     <li>
                         <a href="{{ route('products', array_filter(['search' => request('search')])) }}"
-                           class="{{ request('category') ? 'opacity-80' : 'font-semibold'}}">
+                        class="{{ request('category') ? 'opacity-80' : 'font-semibold'}}">
                             Semua
                         </a>
                     </li>
                     @foreach($categories as $category)
                         <li>
                             <a href="{{ route('products', array_filter(['category' => $category, 'search' => request('search')])) }}"
-                               class="{{ request('category') === $category ? 'font-semibold' : 'opacity-80' }}">
+                            class="{{ request('category') === $category ? 'font-semibold' : 'opacity-80' }}">
                                 {{ $category }}
                             </a>
                         </li>
