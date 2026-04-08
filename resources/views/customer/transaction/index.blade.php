@@ -109,13 +109,27 @@
                                 <span>:</span>
                                 <span class="flex-1">{{ $transaction->shipping_address ?? '-' }}</span>
                             </div>
-                            <div class="flex items-start gap-2 pb-5">
+                            <div class="flex items-start gap-2">
                                 <span class="w-32">Tanggal Pesanan</span>
                                 <span>:</span>
                                 <span>{{ $transaction->created_at?->format('d/m/Y') }}</span>
                             </div>
+                            @if($transaction->shipping?->tracking_number)
+                                <div class="flex items-start gap-2">
+                                    <span class="w-32">Resi</span>
+                                    <span>:</span>
+                                    <span class="flex items-center gap-2">
+                                        <span class="font-semibold text-white">{{ $transaction->shipping->tracking_number }}</span>
+                                        <button type="button"
+                                                class="px-2 py-1 text-[10px] rounded-full bg-[#8B7B7B] hover:bg-[#7A6A6A] transition-colors text-white"
+                                                onclick="copyOrderId('{{ $transaction->shipping->tracking_number }}', this)">
+                                            Copy
+                                        </button>
+                                    </span>
+                                </div>
+                            @endif
                             @if($transaction->payment_status === 'unpaid')
-                                <div class="flex items-start text-sm font-semibold text-white">
+                                <div class="flex items-start text-base font-semibold text-white">
                                     <span>Pesanan akan dikonfirmasi dalam kurang lebih dari 1x24 jam, Jika tanggal merah atau hari libur maka toko tutup, Terimakasih.</span>
                                 </div>
                             @endif

@@ -154,7 +154,7 @@ class TransactionController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Transaction::with('details.product', 'latestPayment')
+        $query = Transaction::with('details.product', 'latestPayment', 'shipping')
             ->where('user_id', Auth::id());
 
         $status = $request->get('status');

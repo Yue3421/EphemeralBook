@@ -27,21 +27,21 @@
             <div class="w-full max-w-4xl">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                     <a href="https://wa.me/6285117824604"
-                       target="_blank"
-                       rel="noopener"
-                       class="contact-card bg-[#876C67] rounded-2xl p-10 text-center soft-shadow transition-colors">
+                    target="_blank"
+                    rel="noopener"
+                    class="contact-card bg-[#876C67] rounded-2xl p-10 text-center soft-shadow transition-colors">
                         <p class="text-sm font-semibold text-white mb-4">WhatsApp</p>
                         <p class="text-sm text-white/90">+62 851-1782-4604</p>
                     </a>
                     <a href="https://instagram.com/EphemeralBook"
-                       target="_blank"
-                       rel="noopener"
-                       class="contact-card bg-[#876C67] rounded-2xl p-10 text-center soft-shadow transition-colors">
+                    target="_blank"
+                    rel="noopener"
+                    class="contact-card bg-[#876C67] rounded-2xl p-10 text-center soft-shadow transition-colors">
                         <p class="text-sm font-semibold text-white mb-4">Instagram</p>
                         <p class="text-sm text-white/90">@EphemeralBook</p>
                     </a>
                     <a href="mailto:ephemeralbook@gmail.com"
-                       class="contact-card bg-[#876C67] rounded-2xl p-10 text-center soft-shadow transition-colors">
+                    class="contact-card bg-[#876C67] rounded-2xl p-10 text-center soft-shadow transition-colors">
                         <p class="text-sm font-semibold text-white mb-4">Email</p>
                         <p class="text-sm text-white/90">ephemeralbook@gmail.com</p>
                     </a>

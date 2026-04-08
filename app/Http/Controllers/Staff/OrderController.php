@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
+use App\Models\Shipping;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -36,7 +38,7 @@ class OrderController extends Controller
 
     public function edit(Transaction $transaction)
     {
-        $transaction->load('details.product');
+        $transaction->load('details.product', 'shipping');
 
         return view('staff.orders.edit', compact('transaction'));
     }
@@ -44,7 +46,8 @@ class OrderController extends Controller
     public function updateStatus(Request $request, Transaction $transaction)
     {
         $validated = $request->validate([
-            'shipping_status' => 'required|in:packing,shipped,delivered'
+            'shipping_status' => 'required|in:packing,shipped,delivered',
+            'tracking_number' => 'nullable|string|max:100'
         ]);
 
         $status = $validated['shipping_status'] === 'delivered' ? 'completed' : 'processing';
@@ -53,6 +56,19 @@ class OrderController extends Controller
             'shipping_status' => $validated['shipping_status'],
             'status' => $status
         ]);
+
+        if (!empty($validated['tracking_number'])) {
+            $shipping = $transaction->shipping ?? new Shipping();
+            $shipping->fill([
+                'transaction_id' => $transaction->id,
+                'address' => $transaction->shipping_address ?? '-',
+                'courier' => $transaction->shipping_courier ?? 'J&T Express',
+                'tracking_number' => $validated['tracking_number'],
+                'shipped_by' => Auth::id(),
+                'shipped_at' => $shipping->shipped_at ?? now()
+            ]);
+            $shipping->save();
+        }
 
         return redirect()->route('staff.orders.edit', $transaction)
             ->with('success', 'Status barang berhasil diperbarui');

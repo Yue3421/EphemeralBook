@@ -24,7 +24,7 @@
                 <ul class="space-y-3 text-sm text-[#F1ECE6]">
                     <li>
                         <a href="{{ route('products', array_filter(['search' => request('search')])) }}"
-                           class="{{ request('category') ? 'opacity-80' : 'font-semibold' }}">
+                           class="{{ request('category') ? 'opacity-80' : 'font-semibold'}}">
                             Semua
                         </a>
                     </li>

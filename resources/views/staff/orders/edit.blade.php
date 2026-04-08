@@ -64,7 +64,7 @@
 
                 <div class="mt-6 flex items-center justify-between">
                     <span class="text-sm text-[#E6E1D8] font-semibold">STATUS BARANG</span>
-                    <form action="{{ route('staff.orders.status', $transaction) }}" method="POST">
+                    <form action="{{ route('staff.orders.status', $transaction) }}" method="POST" class="flex flex-col gap-3 items-end">
                         @csrf
                         @method('PUT')
                         <div class="flex items-center gap-2">
@@ -77,6 +77,14 @@
                                 Simpan
                             </button>
                         </div>
+                        @if($transaction->shipping_status !== 'packing')
+                        <input type="text"
+                            name="tracking_number"
+                            value="{{ $transaction->shipping?->tracking_number }}"
+                            placeholder="Masukan resi paket"
+                            class="w-[260px] bg-[#D9D9D9] border border-[#000000] rounded-lg px-3 py-2 text-xs text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#8B7B7B]"
+                            {{ $transaction->status === 'cancelled' ? 'disabled' : '' }}>
+                        @endif
                     </form>
                 </div>
 
