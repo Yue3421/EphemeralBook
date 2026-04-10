@@ -68,6 +68,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/checkout', [TransactionController::class, 'checkout'])->name('checkout');
     Route::post('/checkout', [TransactionController::class, 'store'])->name('checkout.store');
     Route::get('/payments/{transaction}', [TransactionController::class, 'payment'])->name('payments.show');
+    Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
 
     // Addresses
     Route::get('/addresses', [AddressController::class, 'index'])->name('addresses.index');

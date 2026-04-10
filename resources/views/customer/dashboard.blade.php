@@ -25,7 +25,7 @@
     <div class="tail-container px-8 py-10">
         {{-- HERO --}}
         <section class="mb-16">
-            <div class="hero-card h-[260px] md:h-[320px] rounded-2xl soft-shadow flex items-center justify-center text-center">
+            <div class="hero-card h-[320px] md:h-[400px] rounded-2xl soft-shadow flex items-center justify-center text-center">
                 <div class="layer w-full h-full px-6 py-10 rounded-2xl justify-center items-center flex flex-col">
                 <div class="px-6">
                     <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow">
@@ -81,7 +81,7 @@
                     <div class="bg-[#D9D9D9] rounded-2xl p-6 flex items-center justify-center soft-shadow">
                         <img src="{{ asset('images/logo-ephemeral.png') }}"
                             alt="Logo Ephemeralbook"
-                            class="w-48 h-48 object-contain">
+                            class="w-50 h-50 object-contain">
                     </div>
                 </div>
 

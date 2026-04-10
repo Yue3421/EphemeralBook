@@ -45,6 +45,7 @@
                     $statusText = $transaction->status === 'cancelled'
                         ? 'Dibatalkan'
                         : ($transaction->payment_status === 'paid' ? 'Dikonfirmasi' : 'Menunggu konfirmasi admin');
+                    $user = auth()->user();
                 @endphp
 
                 <details class="bg-[#4A4754] rounded-2xl p-5 soft-shadow">
@@ -154,7 +155,8 @@
 
                     @if($transaction->isCancellable())
                         <div class="mt-6 flex justify-end">
-                            <form action="{{ route('orders.cancel', $transaction) }}" method="POST">
+                            <form action="{{ route('orders.cancel', $transaction) }}" method="POST"
+                                onsubmit="return confirm('Yakin ingin membatalkan pesanan ini?');">
                                 @csrf
                                 <button type="submit" class="bg-red-600 hover:bg-red-700 transition-colors px-4 py-2 rounded-full text-xs text-white font-semibold">
                                     Batalkan Pesanan
@@ -163,7 +165,7 @@
                         </div>
                     @endif
 
-                    @if ($transaction->payment_status === 'unpaid')
+                    <!-- @if ($transaction->payment_status === 'unpaid')
                     <div class="mt-4 flex justify-end">
                         @php
                             $waText = urlencode("Halo admin, saya ingin verifikasi pembayaran. Kode invoice : " . $transaction->invoice_code);
@@ -172,9 +174,35 @@
                         target="_blank"
                         rel="noopener"
                         class="bg-green-600 hover:bg-green-700 transition-colors px-4 py-2 rounded-full text-xs text-white font-semibold">
-                            Verifikasi via WhatsApp
+                            Verifikasi Pembayaran via WhatsApp
                         </a>
                     </div>
+                    @endif -->
+
+                    @if($transaction->status === 'cancelled')
+                        @php
+                            $refundText = "Saya yang bertanda tangan di bawah ini:\n" .
+                                "Nama: " . ($user?->name ?? '-') . "\n" .
+                                "Nomor HP: " . ($user?->phone ?? '-') . "\n" .
+                                "Email: " . ($user?->email ?? '-') . "\n\n" .
+                                "Dengan ini mengajukan permohonan refund atas transaksi yang telah saya lakukan melalui metode pembayaran QRIS dengan detail sebagai berikut:\n\n" .
+                                "Tanggal Transaksi: " . ($transaction->created_at?->format('d/m/Y') ?? '-') . "\n" .
+                                "Waktu Transaksi: " . ($transaction->created_at?->format('H:i') ?? '-') . "\n" .
+                                "Nominal Pembayaran: Rp " . number_format($transaction->total_amount ?? 0, 0, ',', '.') . "\n" .
+                                "Nama Merchant: Ephemeralbook\n" .
+                                "ID / Referensi Transaksi: " . ($transaction->invoice_code ?? '-') . "\n\n" .
+                                "Saya berharap pihak Ephemeralbook dapat memproses pengembalian dana tersebut ke:\n" .
+                                "*nomor E-wallet pengguna";
+                            $refundWa = urlencode($refundText);
+                        @endphp
+                        <div class="mt-4 flex justify-end">
+                            <a href="https://wa.me/6285117824604?text={{ $refundWa }}"
+                            target="_blank"
+                            rel="noopener"
+                            class="bg-green-600 hover:bg-green-700 transition-colors px-4 py-2 rounded-full text-xs text-white font-semibold">
+                                Ajukan Refund via WhatsApp
+                            </a>
+                        </div>
                     @endif
                 </details>
             @empty

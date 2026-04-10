@@ -45,9 +45,32 @@
                             <span>Rp {{ number_format($total, 0, ',', '.') }}</span>
                         </div>
 
-                        <div class="flex items-center justify-between text-2xl font-semibold text-white">
-                            <span>Mohon agar bukti pembayaran di screenshot, Terimakasih</span>
-                        </div>
+                        <p class="text-xs text-[#E6E1D8] mb-4">
+                            Mohon upload bukti pembayaran agar pesanan bisa diproses.
+                        </p>
+
+                        <form action="{{ route('payments.store') }}" method="POST" enctype="multipart/form-data" class="space-y-3">
+                            @csrf
+                            <input type="hidden" name="transaction_id" value="{{ $transaction->id }}">
+                            <input type="hidden" name="payment_method" value="e_wallet">
+                            <input type="hidden" name="amount" value="{{ $total }}">
+
+                            <input type="date"
+                                   name="payment_date"
+                                   required
+                                   class="w-full bg-[#4A4754] border border-[#7A6A6A] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white"
+                                   value="{{ now()->format('Y-m-d') }}">
+
+                            <input type="file"
+                                   name="proof"
+                                   accept=".jpg,.jpeg,.png"
+                                   required
+                                   class="w-full bg-[#4A4754] border border-[#7A6A6A] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white">
+
+                            <button type="submit" class="w-full bg-green-600 hover:bg-green-700 transition-colors px-4 py-2 rounded-full text-xs text-white font-semibold">
+                                Upload Bukti Pembayaran
+                            </button>
+                        </form>
                     </div>
 
                     <div class="flex justify-center">
@@ -59,53 +82,10 @@
                     </div>
                 </div>
 
-                <div class="flex justify-center mt-8">
-                    <button id="confirmPaymentBtn" type="button" class="bg-green-600 hover:bg-green-700 transition-colors px-6 py-2 rounded-full text-sm text-white font-semibold">
-                        Konfirmasi
-                    </button>
+                <div class="flex justify-center mt-8 text-xs text-[#E6E1D8]">
+                    Setelah upload bukti, status akan menunggu konfirmasi admin.
                 </div>
             </div>
         </section>
     </div>
-
-    {{-- Success Popup --}}
-    <div id="paymentSuccessModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 px-6">
-        <div class="w-full max-w-md bg-[#4A4754] rounded-2xl p-6 text-center soft-shadow">
-            <h2 class="text-xl font-semibold text-white mb-2">Pembayaran Berhasil</h2>
-            <p class="text-sm text-[#E6E1D8] mb-6">
-                Terima kasih! Pembayaran kamu berhasil dan sedang diproses.
-            </p>
-            <div class="flex items-center justify-center gap-3">
-                <button id="closePaymentModal" type="button" class="bg-[#8B7B7B] hover:bg-[#7A6A6A] transition-colors px-5 py-2 rounded-full text-xs text-white font-semibold">
-                    Tutup
-                </button>
-                <a href="{{ route('orders') }}" class="bg-green-600 hover:bg-green-700 transition-colors px-5 py-2 rounded-full text-xs text-white font-semibold">
-                    Lihat Pesanan
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const confirmBtn = document.getElementById('confirmPaymentBtn');
-        const modal = document.getElementById('paymentSuccessModal');
-        const closeBtn = document.getElementById('closePaymentModal');
-
-        if (confirmBtn && modal) {
-            confirmBtn.addEventListener('click', () => {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                setTimeout(() => {
-                    window.location.href = "{{ route('orders') }}";
-                }, 1500);
-            });
-        }
-
-        if (closeBtn && modal) {
-            closeBtn.addEventListener('click', () => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            });
-        }
-    </script>
 @endsection

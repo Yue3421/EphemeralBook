@@ -19,16 +19,16 @@
 <body class="min-h-screen flex flex-col">
 
     <!-- NAVBAR -->
-<header class="bg-[#D9D9D9] text-black border-b border-zinc-300 sticky top-0 z-50">
+<header class="bg-[#D9D9D9] text-[#37353E] border-b border-zinc-300 sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-8 py-5 flex items-center justify-between">
         <div class="flex items-center gap-x-3">
             <a href="{{ route('staff.dashboard') }}" class="text-2xl font-bold tracking-tighter">Ephemeralbook</a>
         </div>
 
         <nav class="hidden md:flex items-center gap-x-10 text-sm font-medium">
-            <a href="{{ route('staff.dashboard') }}" class="hover:text-amber-700 transition-colors">Home</a>
-            <a href="{{ route('staff.products.index') }}" class="hover:text-amber-700 transition-colors">Product</a>
-            <a href="{{ route('staff.orders.index') }}" class="hover:text-amber-700 transition-colors">Order List</a>
+            <a href="{{ route('staff.dashboard') }}" class="hover:text-[#876C67] transition-colors">Home</a>
+            <a href="{{ route('staff.products.index') }}" class="hover:text-[#876C67] transition-colors">Product</a>
+            <a href="{{ route('staff.orders.index') }}" class="hover:text-[#876C67] transition-colors">Order List</a>
         </nav>
 
         <div class="flex items-center gap-x-6">

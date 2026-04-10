@@ -29,7 +29,7 @@ class PaymentController extends Controller
             ->first();
 
         if ($existingPayment) {
-            return redirect()->route('customer.transactions.show', $transaction->id)
+            return redirect()->route('orders')
                 ->with('info', 'Anda sudah mengupload bukti pembayaran. Silakan tunggu konfirmasi.');
         }
 
@@ -90,12 +90,12 @@ class PaymentController extends Controller
             'submitted_by' => Auth::id()
         ]);
 
-        // Update status transaksi
+        // Update status transaksi (gunakan nilai enum yang valid)
         $transaction->update([
-            'payment_status' => 'pending'
+            'payment_status' => 'unpaid'
         ]);
 
-        return redirect()->route('customer.transactions.show', $transaction->id)
+        return redirect()->route('orders')
             ->with('success', 'Bukti pembayaran berhasil diupload. Menunggu konfirmasi admin.');
     }
 

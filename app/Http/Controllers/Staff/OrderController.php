@@ -38,7 +38,7 @@ class OrderController extends Controller
 
     public function edit(Transaction $transaction)
     {
-        $transaction->load('details.product', 'shipping');
+        $transaction->load('details.product', 'shipping', 'latestPayment');
 
         return view('staff.orders.edit', compact('transaction'));
     }

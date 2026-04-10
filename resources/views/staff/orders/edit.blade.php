@@ -62,6 +62,18 @@
                     </form>
                 </div>
 
+                @if($transaction->latestPayment?->proof_url)
+                    <div class="mt-4 flex items-center justify-between">
+                        <span class="text-sm text-[#E6E1D8] font-semibold">BUKTI PEMBAYARAN</span>
+                        <a href="{{ asset('storage/'.$transaction->latestPayment->proof_url) }}"
+                           target="_blank"
+                           rel="noopener"
+                           class="bg-blue-600 hover:bg-blue-700 transition-colors px-4 py-2 rounded-lg text-xs text-white font-semibold">
+                            Lihat Bukti
+                        </a>
+                    </div>
+                @endif
+
                 <div class="mt-6 flex items-center justify-between">
                     <span class="text-sm text-[#E6E1D8] font-semibold">STATUS BARANG</span>
                     <form action="{{ route('staff.orders.status', $transaction) }}" method="POST" class="flex flex-col gap-3 items-end">
